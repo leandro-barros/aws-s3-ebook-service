@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ebooks")
@@ -48,6 +49,6 @@ public class EbookController {
         return ebookRepository.findAll()
                 .stream()
                 .map(ebookModelAssembler::toModel)
-                .toList();
+                .collect(Collectors.toList());
     }
 }
