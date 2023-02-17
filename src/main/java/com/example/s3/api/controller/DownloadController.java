@@ -2,6 +2,7 @@ package com.example.s3.api.controller;
 
 import com.example.s3.domain.model.FileReference;
 import com.example.s3.domain.repository.FileReferenceRepository;
+import com.example.s3.domain.service.DownloadRequestResult;
 import com.example.s3.domain.service.StorageService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
