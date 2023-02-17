@@ -1,5 +1,6 @@
 package com.example.s3.infra;
 
+import com.example.s3.core.properties.StorageProperties;
 import com.example.s3.domain.exception.StorageCloudException;
 import com.example.s3.domain.model.FileReference;
 import com.example.s3.domain.service.CloudStorageProvider;
