@@ -10,4 +10,9 @@ public class EbookModel {
     private UUID id;
     private String title;
     private String author;
+
+    private FileReferenceModel cover;
+
+    private FileReferenceModel attachment;
+
 }
