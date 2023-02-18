@@ -1,6 +1,8 @@
 package com.example.s3.domain.service;
 
+import com.example.s3.domain.exception.BusinessException;
 import com.example.s3.domain.model.Ebook;
+import com.example.s3.domain.model.FileReference;
 import com.example.s3.domain.repository.EbookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,16 @@ import java.util.Objects;
 public class EbookService {
 
     private final EbookRepository ebookRepository;
+    private final StorageService storageService;
 
     @Transactional
     public Ebook create(Ebook ebook) {
         Objects.requireNonNull(ebook);
+
+        validate(ebook);
+
+        ebook.getCover().setTemp(false);
+        ebook.getAttachment().setTemp(false);
 
         ebookRepository.save(ebook);
 
@@ -28,7 +36,19 @@ public class EbookService {
     public Ebook update(Ebook ebookUpdated) {
         Objects.requireNonNull(ebookUpdated);
 
+        validate(ebookUpdated);
+
         Ebook existingEbook = ebookRepository.findById(ebookUpdated.getId()).orElseThrow(EntityNotFoundException::new);
+
+        if(!ebookUpdated.getCover().equals(existingEbook.getCover())) {
+            ebookUpdated.getCover().setTemp(false);
+            this.storageService.softDelete(existingEbook.getCover());
+        }
+
+        if(!ebookUpdated.getAttachment().equals(existingEbook.getAttachment())) {
+            ebookUpdated.getAttachment().setTemp(false);
+            this.storageService.softDelete(existingEbook.getAttachment());
+        }
 
         existingEbook.update(ebookUpdated);
         ebookRepository.save(existingEbook);
@@ -36,4 +56,25 @@ public class EbookService {
 
         return existingEbook;
     }
+
+    private void validate(Ebook ebook) {
+        if(!storageService.fileExists(ebook.getCover())) {
+            throw new BusinessException(String.format("Arquivo %s não encontrado", ebook.getCover().getId()));
+        }
+
+        if(!storageService.fileExists(ebook.getAttachment())) {
+            throw new BusinessException(String.format("Arquivo %s não encontrado", ebook.getAttachment().getId()));
+        }
+
+        if(!FileReference.Type.IMAGE.equals(ebook.getCover().getType())) {
+            throw new BusinessException(String.format("Arquivo de capa %s deve ser uma imagem",
+                    ebook.getCover().getId()));
+        }
+
+        if(!FileReference.Type.DOCUMENT.equals(ebook.getAttachment().getType())) {
+            throw new BusinessException(String.format("Arquivo de anexo %s deve ser um documento",
+                    ebook.getAttachment().getId()));
+        }
+    }
+
 }
