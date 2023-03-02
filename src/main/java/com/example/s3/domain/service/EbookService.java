@@ -16,6 +16,7 @@ import java.util.Objects;
 public class EbookService {
 
     private final EbookRepository ebookRepository;
+
     private final StorageService storageService;
 
     @Transactional

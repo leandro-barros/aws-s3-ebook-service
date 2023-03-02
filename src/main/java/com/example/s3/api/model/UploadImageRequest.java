@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class UploadImageRequest {
+
     @NotBlank
     @AllowedFileExtensions({"png","jpg"})
     private String fileName;
