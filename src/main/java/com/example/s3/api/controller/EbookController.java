@@ -22,8 +22,11 @@ import java.util.stream.Collectors;
 public class EbookController {
 
     private final EbookService ebookService;
+
     private final EbookRepository ebookRepository;
+
     private final EbookModelAssembler ebookModelAssembler;
+
     private final EbookModelDissembler ebookModelDissembler;
 
     @PostMapping
@@ -33,12 +36,12 @@ public class EbookController {
     }
 
     @GetMapping("{ebookId}")
-    public EbookModel getById(@PathVariable UUID ebookId) {
+    public EbookModel findById(@PathVariable UUID ebookId) {
         return ebookModelAssembler.toModel(ebookRepository.findById(ebookId).orElseThrow(EntityNotFoundException::new));
     }
 
     @PutMapping("{ebookId}")
-    public EbookModel atualizar(@PathVariable UUID ebookId,
+    public EbookModel update(@PathVariable UUID ebookId,
                                 @RequestBody @Valid EbookRequest request) {
         Ebook ebook = ebookModelDissembler.toDomain(request, ebookId);
         return  ebookModelAssembler.toModel(ebookService.update(ebook));
@@ -51,4 +54,5 @@ public class EbookController {
                 .map(ebookModelAssembler::toModel)
                 .collect(Collectors.toList());
     }
+
 }
