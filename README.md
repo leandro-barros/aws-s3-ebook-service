@@ -23,6 +23,13 @@
 	🚧  AWS S3 Ebook Service ♻️ Concluído 🚀 🚧
 </h4>
 
+## 🛠 Tecnologias
+
+As seguintes ferramentas foram utilizadas na construção do projeto:
+
+- [Java 8+](https://aws.amazon.com/pt/corretto/?filtered-posts.sort-by=item.additionalFields.createdDate&filtered-posts.sort-order=desc)
+- [Maven](https://maven.apache.org/)
+  
 ## 👨‍💻 Autor
 
 <a href="https://www.linkedin.com/in/leandroebarros/">
